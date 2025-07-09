@@ -10,6 +10,12 @@ Ich habe mit Hilfe von ChatGPT und ohne große Vorkenntnisse im Programmieren od
 
 Fühlt euch frei, es zu verbessern oder anzupassen!
 
+## Beispiel:
+
+![grafik](https://github.com/user-attachments/assets/ad8a8f84-334a-4c42-9d49-b25e089fbc1d)
+
+## Haltestellen ID finden
+
 Die Haltestelle im Beispiel ist Karlsruhe Entenfang mit der Kataster ID 7000051.
 
 Um deine richtige Haltestelle zu suchen passe die URL aus der kvv.yaml an und rufe diese im Browser auf:
