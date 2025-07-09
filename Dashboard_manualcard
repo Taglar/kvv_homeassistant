@@ -1,0 +1,55 @@
+type: markdown
+title: 🚉 Abfahrten – Karlsruhe Entenfang
+content: >
+  {% set icons = {
+    'Straßenbahn': '🚋',
+    'S-Bahn': '🚆',
+    'Stadtbus': '🚌',
+    'Regionalbus': '🚌',
+    'Einsatzwagen': '🚍'
+  } %}
+
+  {% set departures_raw = state_attr('sensor.kvv_entenfang', 'departureList') %}
+  {% if departures_raw %}
+    {% set ns = namespace(departures=[]) %}
+    {% for dep in departures_raw %}
+      {% set dep = dep | combine({'_countdown': dep.countdown | int }) %}
+      {% set ns.departures = ns.departures + [dep] %}
+    {% endfor %}
+    {% set departures = ns.departures | sort(attribute='_countdown') %}
+    {% set first = departures[0] %}
+    {% set product = first.servingLine.name if first.servingLine.name is defined else '–' %}
+    {% set planned = first.dateTime if first.dateTime is defined else none %}
+    {% set real = first.realDateTime if first.realDateTime is defined else planned %}
+    {% set p_hour = planned.hour | int if planned is not none else 0 %}
+    {% set p_min = planned.minute | int if planned is not none else 0 %}
+    {% set r_hour = real.hour | int if real is not none else p_hour %}
+    {% set r_min = real.minute | int if real is not none else p_min %}
+    {% set delay = (r_hour * 60 + r_min) - (p_hour * 60 + p_min) %}
+    {% set delay_str = '+' ~ delay ~ ' Min' if delay > 0 else (delay ~ ' Min' if delay < 0 else '±0 Min') %}
+    {% set icon = icons.get(product, '') %}
+
+    **Nächste Abfahrt:**  
+    {{ icon }} {{ first.servingLine.number }} ({{ product }}) → {{ first.servingLine.direction }}  
+    🕒 {{ first.countdown }} min — {{ first.platformName if first.platformName is defined else '–' }}  
+    📅 geplant {{ "%02d:%02d"|format(p_hour, p_min) if planned is not none else '–' }} — {{ delay_str }}
+
+    {%- for dep in departures[1:] %}
+      {%- set product = dep.servingLine.name if dep.servingLine.name is defined else '–' %}
+      {%- set planned = dep.dateTime if dep.dateTime is defined else none %}
+      {%- set real = dep.realDateTime if dep.realDateTime is defined else planned %}
+      {%- set p_hour = planned.hour | int if planned is not none else 0 %}
+      {%- set p_min = planned.minute | int if planned is not none else 0 %}
+      {%- set r_hour = real.hour | int if real is not none else p_hour %}
+      {%- set r_min = real.minute | int if real is not none else p_min %}
+      {%- set delay = (r_hour * 60 + r_min) - (p_hour * 60 + p_min) %}
+      {%- set delay_str = '+' ~ delay ~ ' Min' if delay > 0 else (delay ~ ' Min' if delay < 0 else '±0 Min') %}
+      {%- set icon = icons.get(product, '') %}
+
+      {{ icon }} {{ dep.servingLine.number }} ({{ product }}) → {{ dep.servingLine.direction }}  
+      🕒 {{ dep.countdown }} min — {{ dep.platformName if dep.platformName is defined else '–' }}  
+      📅 geplant {{ "%02d:%02d"|format(p_hour, p_min) if planned is not none else '–' }} — {{ delay_str }}
+    {%- endfor %}
+  {% else %}
+    *(Keine Daten verfügbar)*
+  {% endif %}
