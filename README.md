@@ -1,4 +1,4 @@
-# 🚌 KVV Abfahrten für Home Assistant
+# 🚌 KVV Abfahrtsmonitor für Home Assistant
 
 Dieses Projekt zeigt Abfahrten vom KVV (Karlsruher Verkehrsverbund) im Home Assistant Dashboard an.
 
