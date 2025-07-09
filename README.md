@@ -7,7 +7,24 @@ Inspiriert wurde es durch den Vortrag von Till auf YouTube:
 Technische Grundlage: [Original-Repository von Till](https://github.com/harbaum/kvv)
 
 Ich habe mit Hilfe von ChatGPT und ohne große Vorkenntnisse im Programmieren oder Scripten ein funktionierendes Dashboard gebaut.  
+
 Fühlt euch frei, es zu verbessern oder anzupassen!
+
+Die Haltestelle im Beispiel ist Karlsruhe Entenfang mit der Kataster ID 7000051.
+
+Um deine richtige Haltestelle zu suchen passe die URL aus der kvv.yaml an und rufe diese im Browser auf:
+
+## Vorher:
+
+https://www.kvv.de/tunnelEfaDirect.php?outputFormat=JSON&language=de&coordOutputFormat=WGS84[DD.DDDDD]&type_dm=stop&name_dm=7000051&lookahead=60&limit=10&mode=direct&useRealtime=1&action=XSLT_DM_REQUEST
+
+## Nachher:
+https://www.kvv.de/tunnelEfaDirect.php?outputFormat=JSON&language=de&coordOutputFormat=WGS84[DD.DDDDD]&type_dm=stop&name_dm=Karlsruhe%20Europaplatz&lookahead=60&limit=10&mode=direct&useRealtime=1&action=XSLT_DM_REQUEST
+
+* dm=7000051 wird zu dm=Karlsruhe Europaplatz
+Karlsruhe ist klar der Ort, gefolgt vom (Teil)Name der Haltestelle. Es geht bspw. auch dm=Karlsruhe Europaplatz (U) für die Ustrab. Im Firefox funktioniert es mit Leerstellen und den () - Alternativ kann für die Leerstelle %20 genutzt werden.
+
+In der angezeigten JSON ist die ```STOP ID 7000037``` zu finden.
 
 ---
 
