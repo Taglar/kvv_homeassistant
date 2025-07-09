@@ -1,0 +1,13 @@
+- resource: "https://www.kvv.de/tunnelEfaDirect.php?outputFormat=JSON&language=de&coordOutputFormat=WGS84[DD.DDDDD]&type_dm=stop&name_dm=7000051&lookahead=60&limit=10&mode=direct&useRealtime=1&action=XSLT_DM_REQUEST"
+  scan_interval: 60
+  sensor:
+    - name: "KVV Entenfang"
+      value_template: >
+        {% if value_json.departureList %}
+          {{ value_json.departureList[0].servingLine.number }} → {{ value_json.departureList[0].servingLine.direction }} in {{ value_json.departureList[0].countdown }} min
+        {% else %}
+          Keine Abfahrten
+        {% endif %}
+      # Hier: json_attributes_path oder json_attributes je nachdem was deine HA-Version erwartet
+      json_attributes:
+        - departureList
